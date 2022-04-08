@@ -28,8 +28,8 @@ score = {
     '}': 1197,
     '>': 25137,
 }
-
-print(sum(list(map(lambda i: score[i], illegal))))
+if __name__ == '__main__':
+    print(sum(list(map(lambda i: score[i], illegal))))
 
 
 
@@ -39,28 +39,29 @@ class SyntaxScore:
         self.data = data
 
     # string = '{<[[]]>}<{[{[{[]{()[[[]'
+    stack = []
+    close = ['>', ')', '}', ']']
+    open = ['[', '<', '{', '(']
+    pair = ['<>', '()', '{}', "[]"]
+    illegal = []
+    score = {
+        ')': 3,
+        ']': 57,
+        '}': 1197,
+        '>': 25137,
+    }
     def calculate(self):
-        stack = []
-        close = ['>', ')', '}', ']']
-        open = ['[', '<', '{', '(']
-        pair = ['<>', '()', '{}', "[]"]
-        illegal = []
-        score = {
-            ')': 3,
-            ']': 57,
-            '}': 1197,
-            '>': 25137,
-        }
+
         for j in self.data:
             for i in j:
-                if i in open:
-                    stack.append(i)
+                if i in self.open:
+                    self.stack.append(i)
                 if i in close:
-                    if stack[-1] + i in pair:
+                    if self.stack[-1] + i in self.pair:
                         # print(stack[-1] + i)
-                        stack.pop()
+                        self.stack.pop()
                     else:
-                        illegal.append(i)
-                        stack.pop()
+                        self.illegal.append(i)
+                        self.stack.pop()
 
         return sum(list(map(lambda i: score[i], illegal)))
